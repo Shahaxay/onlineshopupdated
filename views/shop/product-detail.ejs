@@ -3,11 +3,11 @@
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-        <main class="centered">
+        <main class="centered details">
             <h1><%= product.title %></h1>
             <hr>
             <div>
-                <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                <img src="<%= product.imageUrl %>" alt="<%= product.title %>" class=".card_image">
             </div>
             <h2><%= product.description %></h2>
             <p>$<%= product.price %></p>
