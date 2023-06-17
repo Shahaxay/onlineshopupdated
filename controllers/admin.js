@@ -71,25 +71,4 @@ exports.postDeleteProduct=(req,res,next)=>{
   console.log("fromPostDeleteProduct",prodId);
   Product.deleteproductbyID(prodId);
   res.redirect('/admin/products');
-
-  //Another way:
-
-  // Product.fetchAll(products=>{
-  //   //console.log(products);
-  //   //deleting products with given id
-  //   for(var i=0;i<products.length;i++){
-  //     if(products[i].id===prodId){
-  //       products.splice(i,1);
-  //       break;
-  //     }
-  //   }
-  //   //overwriting the products array in products.json file
-  //   fs.writeFile(path.join(rootDir,'data','products.json'),JSON.stringify(products),err=>{
-  //     console.log(err);
-  //     if(!err){
-  //       res.redirect('admin/products');
-  //     }
-  //   })
-
-  // })
 }

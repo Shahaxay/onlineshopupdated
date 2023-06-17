@@ -57,17 +57,6 @@ exports.getCart = (req, res, next) => {
           products: []
         });
     }
-    // cart.products.forEach(p=>{
-    //   Product.fetchAll(products=>{
-    //     const product=products.find(p1=>p1.id===p.id);
-    //     // console.log(p.quantity,product.title);
-    //     let cartitem={"title": product.title, "quantity": p.quantity};
-    //     cartobj.push(cartitem);
-    //     console.log(cartobj);
-    //     //console.log(cartitem);
-    //   })
-    // })
-    // console.log(cartobj, 'executed first');
   })
   
 };
