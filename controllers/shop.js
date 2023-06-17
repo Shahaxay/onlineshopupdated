@@ -31,10 +31,45 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  res.render('shop/cart', {
-    path: '/cart',
-    pageTitle: 'Your Cart'
-  });
+  Cart.getCart(cart=>{
+    console.log(cart);
+    if(cart){
+      Product.fetchAll(products=>{
+        const cartProducts=[];
+        for(let product of products){
+          const prd=cart.products.find(p=>p.id===product.id);
+          if(prd){
+            cartProducts.push({"title": product.title, "quantity": prd.quantity, "id":prd.id})
+          }
+        }
+        console.log("cart:",cartProducts);
+        res.render('shop/cart', {
+          path: '/cart',
+          pageTitle: 'Your Cart',
+          products: cartProducts,
+          totalPrice:cart.totalPrice
+        });
+      })
+    }else{
+      res.render('shop/cart', {
+          path: '/cart',
+          pageTitle: 'Your Cart',
+          products: []
+        });
+    }
+    // cart.products.forEach(p=>{
+    //   Product.fetchAll(products=>{
+    //     const product=products.find(p1=>p1.id===p.id);
+    //     // console.log(p.quantity,product.title);
+    //     let cartitem={"title": product.title, "quantity": p.quantity};
+    //     cartobj.push(cartitem);
+    //     console.log(cartobj);
+    //     //console.log(cartitem);
+    //   })
+    // })
+    // console.log(cartobj, 'executed first');
+  })
+  
 };
 
 exports.postCart=(req,res,next)=>{
@@ -44,10 +79,18 @@ exports.postCart=(req,res,next)=>{
     // console.log(product);
     Cart.addProduct(prodId, product.price);
   })
-  res.render('shop/cart',{
-    path: '/cart',
-    pageTitle: 'Your Cart'
+  res.redirect('/cart');
+
+}
+
+exports.postDeleteCartItem=(req,res,next)=>{
+  const prodId=req.body.productId;
+  console.log(prodId);
+  Product.fetchProduct(prodId,product=>{
+    Cart.deleteProduct(prodId,product.price);
+    res.redirect('/cart');
   })
+
 }
 
 exports.getOrders = (req, res, next) => {
