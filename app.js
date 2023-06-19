@@ -7,6 +7,8 @@ const errorController = require('./controllers/error');
 const sequelize=require('./util/database');
 const Product=require('./models/product');
 const User=require('./models/user');
+const Cart=require('./models/cart');
+const CartItem=require('./models/cartItem');
 
 const app = express();
 
@@ -36,8 +38,17 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+//one to many association
 Product.belongsTo(User,{constraints:true,onDelete:'cascade'});
-User.hasMany(Product);
+User.hasMany(Product);  //optional
+
+//one to one association
+User.hasOne(Cart);
+Cart.belongsTo(User); //optional
+
+//many to many association
+Cart.belongsToMany(Product,{through:CartItem});
+Product.belongsToMany(Cart,{through:CartItem}); //optional
 
 // sequelize.sync({force:true}) //it override everything in the models like removing all the recored if it does not match with the constraints
 sequelize.sync()
@@ -54,7 +65,17 @@ sequelize.sync()
     })
     .then(user=>{
         //console.log(user);
-        app.listen(3000);
+        Cart.findByPk(1)
+        .then(cart=>{
+            if(!cart){
+                return user.createCart();
+            }
+            return cart;
+        })
+        .then(cart=>{
+            app.listen(3000);
+        })
+        .catch(err=>console.log(err));  
     })
     .catch(err=>console.log(err));
 })

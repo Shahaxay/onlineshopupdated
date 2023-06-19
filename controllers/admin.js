@@ -51,7 +51,8 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  req.user.getProducts()
+  // req.findAll()  
+  req.user.getProducts()   //this is not necessay becoz every user need to see all the products
   .then(products=>{
     res.render('admin/products', {
       prods: products,

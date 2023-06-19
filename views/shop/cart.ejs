@@ -7,7 +7,7 @@
             <%if(products.length>0){%>
                 <ul>
                     <%for(prod of products){%>
-                        <li><%=prod.title%> (<%=prod.quantity%>)</li>
+                        <li><%=prod.title%> (<%=prod.cartItem.quantity%>)</li>
                         <form action="/cart-delete-item" method="post">
                             <input type="hidden" name="productId" value="<%=prod.id%>">
                             <button class="btn" type="submit">Delete</button>
