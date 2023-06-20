@@ -9,6 +9,8 @@ const Product=require('./models/product');
 const User=require('./models/user');
 const Cart=require('./models/cart');
 const CartItem=require('./models/cartItem');
+const Order=require('./models/order');
+const OrderItem=require('./models/orderItem');
 
 const app = express();
 
@@ -49,6 +51,14 @@ Cart.belongsTo(User); //optional
 //many to many association
 Cart.belongsToMany(Product,{through:CartItem});
 Product.belongsToMany(Cart,{through:CartItem}); //optional
+
+//one to many
+User.hasMany(Order);
+Order.belongsTo(User); //optional
+
+//many to many
+Order.belongsToMany(Product,{through:OrderItem});
+Product.belongsToMany(Order,{through:OrderItem});
 
 // sequelize.sync({force:true}) //it override everything in the models like removing all the recored if it does not match with the constraints
 sequelize.sync()
